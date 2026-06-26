@@ -1,6 +1,5 @@
 -- TODO treesitter?
 -- treesitter text objects for better jumping
--- ufo for folding?
 -- neorg?
 -- lualine or anther status line?
 -- lsp if needed
@@ -70,13 +69,18 @@ vim.opt.iskeyword:append("-")
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true
 vim.o.winborder = "rounded"
- 
+
 -- PLUGINS
-vim.pack.add { 
+vim.pack.add {
   { src = "https://github.com/catppuccin/nvim", name = "catppuccin"},
   "https://github.com/nvim-mini/mini.icons",
   "https://github.com/folke/snacks.nvim",
   "https://github.com/folke/which-key.nvim",
+  "https://github.com/lewis6991/gitsigns.nvim",
+  "https://github.com/mfussenegger/nvim-dap",
+  "https://github.com/nvim-neotest/nvim-nio",
+  "https://github.com/rcarriga/nvim-dap-ui",
+  "https://github.com/leoluz/nvim-dap-go",
 }
 
 vim.cmd.colorscheme "catppuccin-mocha"
@@ -105,9 +109,19 @@ Snacks.setup({
     enabled = true ,
     sources = {
       undo = {
-        preview = "diff_delta", 
+        preview = "diff_delta",
       },
     },
+  },
+})
+
+local gs = require("gitsigns")
+gs.setup({
+  current_line_blame = false, -- Set to true if you want it always on by default
+  current_line_blame_opts = {
+    virt_text = true,
+    virt_text_pos = 'eol', -- Blame appears at the end of the line
+    delay = 50,           -- Half a second hover pause before showing
   },
 })
 
@@ -130,6 +144,8 @@ wk.add({
   { "<leader>s", group = "Split..." },
   { "<leader>y", group = "Yank..." },
   { "<leader>c", group = "Code actions..." },
+  { "<leader>d", group = "Debug..." },
+  { "<leader>du", group = "Debug UI..." },
 })
 
 -- Snacks.picker
@@ -155,8 +171,9 @@ keymap("n", "<leader>u", function() Snacks.picker.undo() end, { desc = "Undo tre
 keymap("n", "<leader>gg", function() Snacks.lazygit.open() end, { desc = "Lazygit TUI" })
 keymap("n", "<leader>gh", function() Snacks.lazygit.log() end, { desc = "Git History (Current Repo)" })
 
--- 2. Virtual Text Git Blame Toggle
-keymap("n", "<leader>gb", function() Snacks.blame.toggle() end, { desc = "Toggle Git Blame Virtual Text" })
+keymap('n', '<leader>gb', gs.toggle_current_line_blame, { desc = "Toggle Git Blame Virtual Text" })
+keymap('n', '<leader>gs', gs.toggle_signs, { desc = "Toggle Gutter Change Signs" })
+
 
 -- Resize with arrows
 keymap("n", "<C-Up>", ":resize -2<CR>", { desc = "Resize -2" })
