@@ -11,7 +11,7 @@ local reload_group = vim.api.nvim_create_augroup("ConfigReload", { clear = true 
 vim.api.nvim_create_autocmd("BufWritePost", {
   group = reload_group,
   -- Trigger only when files inside your nvim config directory are saved
-  pattern = vim.fn.stdpath("config") .. "/*.lua", 
+  pattern = vim.fn.stdpath("config") .. "/*.lua",
   callback = function()
     -- Clear cache for all modules belonging to your config
     -- (Assumes your custom modules are structured in a 'user' or sub-folder)
@@ -81,7 +81,13 @@ vim.pack.add {
   "https://github.com/nvim-neotest/nvim-nio",
   "https://github.com/rcarriga/nvim-dap-ui",
   "https://github.com/leoluz/nvim-dap-go",
+  "https://github.com/saghen/blink.lib",
+  "https://github.com/saghen/blink.cmp"
 }
+
+local cmp = require('blink.cmp')
+cmp.build():pwait()
+cmp.setup()
 
 vim.cmd.colorscheme "catppuccin-mocha"
 require('mini.icons').setup()
@@ -213,8 +219,22 @@ keymap("n", "<leader>sh", "<cmd>split<CR>", { desc = "Horizontal" })
 keymap("n", "<leader>sv", "<cmd>vsplit<CR>", { desc = "Vertical" })
 keymap("n", "<leader>so", "<cmd>only<CR>", { desc = "Only" })
 
+-- Jump to the next diagnostic and immediately open a floating preview window
+keymap("n", "]d", function()
+  vim.diagnostic.goto_next({
+    float = { border = "rounded", focusable = false }
+  })
+end, { desc = "Next Diagnostic (Floating Peek)" })
+
+-- Jump to the previous diagnostic and immediately open a floating preview window
+keymap("n", "[d", function()
+  vim.diagnostic.goto_prev({
+    float = { border = "rounded", focusable = false }
+  })
+end, { desc = "Prev Diagnostic (Floating Peek)" })
+
 -- copy filepath
-function copyPath()
+local function copyPath()
   local filepath = vim.fn.expand('%')
   vim.fn.setreg("+", filepath)
 end
