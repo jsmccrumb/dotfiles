@@ -3,7 +3,6 @@
 -- neorg?
 -- lualine or anther status line?
 -- lsp if needed
--- git / gitsigns / dap / cmp
 -- comments
 -- Create an autocmd group for hot-reloading
 local reload_group = vim.api.nvim_create_augroup("ConfigReload", { clear = true })
@@ -11,7 +10,7 @@ local reload_group = vim.api.nvim_create_augroup("ConfigReload", { clear = true 
 vim.api.nvim_create_autocmd("BufWritePost", {
   group = reload_group,
   -- Trigger only when files inside your nvim config directory are saved
-  pattern = vim.fn.stdpath("config") .. "/*.lua",
+  pattern = "*/nvim/*.lua",
   callback = function()
     -- Clear cache for all modules belonging to your config
     -- (Assumes your custom modules are structured in a 'user' or sub-folder)
@@ -74,6 +73,7 @@ vim.o.winborder = "rounded"
 vim.pack.add {
   { src = "https://github.com/catppuccin/nvim", name = "catppuccin"},
   "https://github.com/nvim-mini/mini.icons",
+  "https://github.com/nvim-tree/nvim-web-devicons",
   "https://github.com/folke/snacks.nvim",
   "https://github.com/folke/which-key.nvim",
   "https://github.com/lewis6991/gitsigns.nvim",
