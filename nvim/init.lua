@@ -221,15 +221,17 @@ keymap("n", "<leader>so", "<cmd>only<CR>", { desc = "Only" })
 
 -- Jump to the next diagnostic and immediately open a floating preview window
 keymap("n", "]d", function()
-  vim.diagnostic.goto_next({
-    float = { border = "rounded", focusable = false }
+  vim.diagnostic.jump({
+    count = 1,
+    float = true,
   })
 end, { desc = "Next Diagnostic (Floating Peek)" })
 
 -- Jump to the previous diagnostic and immediately open a floating preview window
 keymap("n", "[d", function()
-  vim.diagnostic.goto_prev({
-    float = { border = "rounded", focusable = false }
+  vim.diagnostic.jump({
+    count = -1,
+    float = true,
   })
 end, { desc = "Prev Diagnostic (Floating Peek)" })
 
